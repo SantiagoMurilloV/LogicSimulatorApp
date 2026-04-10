@@ -41,7 +41,6 @@ export default function CircuitCanvas() {
   const onNodesChange = useCallback(
     (changes: NodeChange<Node<GateNodeData>>[]) => {
       if (isSimulating) {
-        // Only allow selection changes during simulation
         const selectOnly = changes.filter((c) => c.type === 'select')
         if (selectOnly.length === 0) return
         selectOnly.forEach((c) => {

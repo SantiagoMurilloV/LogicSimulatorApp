@@ -83,8 +83,8 @@ export default function LoginScreen() {
           </p>
         </form>
 
-        <p className="text-[10px] text-muted-foreground/50 text-center mt-8">
-          Developed by Ing. Santiago Murillo
+        <p className="text-xs text-muted-foreground/60 text-center mt-8">
+          &lt;/&gt; Developed by Ing. Santiago Murillo
         </p>
       </div>
     </div>

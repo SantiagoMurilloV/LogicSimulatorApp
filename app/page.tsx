@@ -1,18 +1,32 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTheme } from 'next-themes'
 import { ReactFlowProvider } from '@xyflow/react'
 import CircuitCanvas from '@/components/canvas/CircuitCanvas'
 import ComponentSidebar from '@/components/canvas/ComponentSidebar'
 import ControlPanel from '@/components/canvas/ControlPanel'
 import LoginScreen from '@/components/auth/LoginScreen'
 import { useAuthStore } from '@/store/useAuthStore'
-import { CircuitBoardIcon, PanelLeftIcon, PanelRightIcon, XIcon } from 'lucide-react'
+import {
+  CircuitBoardIcon,
+  PanelLeftIcon,
+  PanelRightIcon,
+  XIcon,
+  SunIcon,
+  MoonIcon,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 function SimulatorLayout() {
   const [leftOpen, setLeftOpen] = useState(false)
   const [rightOpen, setRightOpen] = useState(false)
+  const { resolvedTheme, setTheme } = useTheme()
+  const [themeMounted, setThemeMounted] = useState(false)
+
+  useEffect(() => setThemeMounted(true), [])
+
+  const isDark = resolvedTheme === 'dark'
 
   return (
     <ReactFlowProvider>
@@ -32,6 +46,37 @@ function SimulatorLayout() {
               LogiFlow
             </h1>
           </div>
+
+          {/* Theme toggle */}
+          {themeMounted && (
+            <div className="flex items-center gap-0.5 bg-secondary rounded-full p-0.5">
+              <button
+                onClick={() => setTheme('light')}
+                className={cn(
+                  'flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-all',
+                  !isDark
+                    ? 'bg-background text-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                )}
+              >
+                <SunIcon className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Claro</span>
+              </button>
+              <button
+                onClick={() => setTheme('dark')}
+                className={cn(
+                  'flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-all',
+                  isDark
+                    ? 'bg-background text-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                )}
+              >
+                <MoonIcon className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Oscuro</span>
+              </button>
+            </div>
+          )}
+
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground hidden sm:inline">
               Arrastra componentes para construir circuitos

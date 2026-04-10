@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-
+import { ThemeProvider } from '@/components/theme-provider'
 import PWARegister from '@/components/PWARegister'
 import './globals.css'
 
@@ -38,15 +38,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="/icon.svg" />
       </head>
       <body className="font-sans antialiased overscroll-none">
-        {children}
-        <PWARegister />
-
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          {children}
+          <PWARegister />
+        </ThemeProvider>
       </body>
     </html>
   )
