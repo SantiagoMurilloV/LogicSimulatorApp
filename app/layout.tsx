@@ -26,11 +26,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
       { url: '/icon.svg', type: 'image/svg+xml' },
     ],
-    apple: '/apple-icon.png',
+    apple: '/icon.svg',
   },
 }
 
@@ -43,7 +41,7 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <link rel="apple-touch-icon" href="/apple-icon.png" />
+        <link rel="apple-touch-icon" href="/icon.svg" />
       </head>
       <body className="font-sans antialiased overscroll-none">
         {children}

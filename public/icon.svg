@@ -2,66 +2,60 @@
   <rect width="180" height="180" fill="#0a0a0a"/>
 
   <!-- Outer hexagon (subtle glow border) -->
-  <polygon points="90,12 156,42 156,108 90,138 24,108 24,42"
+  <polygon points="90,10 160,45 160,115 90,150 20,115 20,45"
     fill="none" stroke="#4a8cc2" stroke-width="0.8" opacity="0.5"/>
 
   <!-- Inner hexagon (main body) -->
-  <polygon points="90,18 150,46 150,104 90,132 30,104 30,46"
+  <polygon points="90,16 154,49 154,111 90,144 26,111 26,49"
     fill="#1a3a5c" stroke="#1e4d7a" stroke-width="2.5"/>
 
-  <!-- Inner fill gradient effect -->
-  <polygon points="90,22 146,48 146,102 90,128 34,102 34,48"
+  <!-- Inner fill -->
+  <polygon points="90,20 150,51 150,109 90,140 30,109 30,51"
     fill="#1e4a6e" opacity="0.6"/>
 
-  <!-- Horizontal trace line (subtle) -->
-  <line x1="34" y1="75" x2="146" y2="75" stroke="#4a8cc2" stroke-width="0.5" opacity="0.3" stroke-dasharray="2,4"/>
+  <!-- Horizontal trace line -->
+  <line x1="30" y1="80" x2="150" y2="80" stroke="#4a8cc2" stroke-width="0.5" opacity="0.3" stroke-dasharray="2,4"/>
 
-  <!-- Corner dots on hexagon (purple) -->
-  <circle cx="52" cy="32" r="2.5" fill="#8b5cf6" opacity="0.7"/>
-  <circle cx="128" cy="32" r="2.5" fill="#8b5cf6" opacity="0.7"/>
-  <circle cx="52" cy="118" r="2.5" fill="#8b5cf6" opacity="0.7"/>
-  <circle cx="128" cy="118" r="2.5" fill="#8b5cf6" opacity="0.7"/>
+  <!-- Corner dots (purple) -->
+  <circle cx="50" cy="30" r="2.5" fill="#8b5cf6" opacity="0.7"/>
+  <circle cx="130" cy="30" r="2.5" fill="#8b5cf6" opacity="0.7"/>
+  <circle cx="50" cy="130" r="2.5" fill="#8b5cf6" opacity="0.7"/>
+  <circle cx="130" cy="130" r="2.5" fill="#8b5cf6" opacity="0.7"/>
 
   <!-- Corner trace lines (purple) -->
-  <line x1="42" y1="26" x2="56" y2="36" stroke="#8b5cf6" stroke-width="0.8" opacity="0.5"/>
-  <line x1="138" y1="26" x2="124" y2="36" stroke="#8b5cf6" stroke-width="0.8" opacity="0.5"/>
-  <line x1="42" y1="124" x2="56" y2="114" stroke="#8b5cf6" stroke-width="0.8" opacity="0.5"/>
-  <line x1="138" y1="124" x2="124" y2="114" stroke="#8b5cf6" stroke-width="0.8" opacity="0.5"/>
+  <line x1="40" y1="24" x2="54" y2="34" stroke="#8b5cf6" stroke-width="0.8" opacity="0.5"/>
+  <line x1="140" y1="24" x2="126" y2="34" stroke="#8b5cf6" stroke-width="0.8" opacity="0.5"/>
+  <line x1="40" y1="136" x2="54" y2="126" stroke="#8b5cf6" stroke-width="0.8" opacity="0.5"/>
+  <line x1="140" y1="136" x2="126" y2="126" stroke="#8b5cf6" stroke-width="0.8" opacity="0.5"/>
 
-  <!-- AND/NAND Gate body -->
-  <path d="M 62 58 L 82 58 A 20 20 0 0 1 82 92 L 62 92 Z"
+  <!-- AND/NAND Gate body (centered) -->
+  <path d="M 58 62 L 82 62 A 22 22 0 0 1 82 98 L 58 98 Z"
     fill="#2a6090" stroke="#5ba3d9" stroke-width="1.8" opacity="0.9"/>
 
   <!-- Gate label -->
-  <text x="74" y="80" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="700" fill="#a8d4f0" opacity="0.9">&amp;</text>
+  <text x="72" y="85" text-anchor="middle" font-family="Georgia, serif" font-size="18" font-weight="700" fill="#a8d4f0" opacity="0.9">&amp;</text>
 
-  <!-- Negation bubble (NAND) -->
-  <circle cx="106" cy="75" r="5" fill="none" stroke="#4ade80" stroke-width="1.5"/>
+  <!-- Negation bubble -->
+  <circle cx="108" cy="80" r="5.5" fill="none" stroke="#4ade80" stroke-width="1.5"/>
 
-  <!-- Input wires (green) -->
-  <line x1="14" y1="66" x2="62" y2="66" stroke="#4ade80" stroke-width="1.8"/>
-  <line x1="14" y1="84" x2="62" y2="84" stroke="#4ade80" stroke-width="1.8"/>
+  <!-- Input wires -->
+  <line x1="12" y1="72" x2="58" y2="72" stroke="#4ade80" stroke-width="1.8"/>
+  <line x1="12" y1="88" x2="58" y2="88" stroke="#4ade80" stroke-width="1.8"/>
 
   <!-- Input pin dots -->
-  <circle cx="14" cy="66" r="4" fill="#4ade80"/>
-  <circle cx="14" cy="84" r="4" fill="#4ade80"/>
+  <circle cx="12" cy="72" r="4.5" fill="#4ade80"/>
+  <circle cx="12" cy="88" r="4.5" fill="#4ade80"/>
 
   <!-- Gate input junction dots -->
-  <circle cx="62" cy="66" r="2.5" fill="#4ade80"/>
-  <circle cx="62" cy="84" r="2.5" fill="#4ade80"/>
+  <circle cx="58" cy="72" r="2.5" fill="#4ade80"/>
+  <circle cx="58" cy="88" r="2.5" fill="#4ade80"/>
 
-  <!-- Wire from gate to bubble -->
-  <line x1="102" y1="75" x2="101" y2="75" stroke="#4ade80" stroke-width="1.8"/>
-
-  <!-- Output wire (green) -->
-  <line x1="111" y1="75" x2="166" y2="75" stroke="#4ade80" stroke-width="1.8"/>
+  <!-- Output wire -->
+  <line x1="113" y1="80" x2="168" y2="80" stroke="#4ade80" stroke-width="1.8"/>
 
   <!-- Output junction dot -->
-  <circle cx="112" cy="75" r="2.5" fill="#4ade80"/>
+  <circle cx="114" cy="80" r="2.5" fill="#4ade80"/>
 
   <!-- Output pin dot -->
-  <circle cx="166" cy="75" r="4" fill="#4ade80"/>
-
-  <!-- LOGIFLOW text -->
-  <text x="90" y="158" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#5ba3d9" opacity="0.85">LOGIFLOW</text>
+  <circle cx="168" cy="80" r="4.5" fill="#4ade80"/>
 </svg>
