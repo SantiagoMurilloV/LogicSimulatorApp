@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
+
 import PWARegister from '@/components/PWARegister'
 import './globals.css'
 
@@ -16,13 +16,13 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'Logic Circuit Simulator',
-  description: 'Interactive digital logic circuit simulator - build, simulate, and analyze boolean logic circuits',
+  title: 'LogiFlow - Circuit Logic Simulator',
+  description: 'Interactive digital logic circuit simulator — build, simulate, and analyze boolean logic circuits. By Ing. Santiago Murillo',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'CircuitSim',
+    title: 'LogiFlow',
   },
   icons: {
     icon: [
@@ -48,7 +48,7 @@ export default function RootLayout({
       <body className="font-sans antialiased overscroll-none">
         {children}
         <PWARegister />
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+
       </body>
     </html>
   )

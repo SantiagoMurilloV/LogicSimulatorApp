@@ -29,7 +29,7 @@ function SimulatorLayout() {
             </button>
             <CircuitBoardIcon className="w-5 h-5 text-primary" />
             <h1 className="font-semibold text-foreground text-sm sm:text-base truncate">
-              Logic Circuit Simulator
+              LogiFlow
             </h1>
           </div>
           <div className="flex items-center gap-2">

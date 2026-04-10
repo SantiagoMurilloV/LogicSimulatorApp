@@ -1,7 +1,7 @@
 {
-  "name": "Logic Circuit Simulator",
-  "short_name": "CircuitSim",
-  "description": "Interactive digital logic circuit simulator - build, simulate, and analyze boolean logic circuits",
+  "name": "LogiFlow - Circuit Logic Simulator",
+  "short_name": "LogiFlow",
+  "description": "Interactive digital logic circuit simulator — build, simulate, and analyze boolean logic circuits. By Ing. Santiago Murillo",
   "start_url": "/",
   "id": "/",
   "display": "standalone",

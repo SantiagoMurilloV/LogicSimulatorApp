@@ -26,8 +26,11 @@ export default function LoginScreen() {
           <div className="w-16 h-16 rounded-2xl bg-card border border-border flex items-center justify-center">
             <CircuitBoardIcon className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-xl font-semibold text-foreground">Logic Circuit Simulator</h1>
-          <p className="text-sm text-muted-foreground text-center">
+          <h1 className="text-xl font-bold text-foreground tracking-tight">LogiFlow</h1>
+          <p className="text-xs text-muted-foreground text-center">
+            Circuit Logic Simulator
+          </p>
+          <p className="text-sm text-muted-foreground text-center mt-1">
             Inicia sesión para guardar tus circuitos
           </p>
         </div>
@@ -79,6 +82,10 @@ export default function LoginScreen() {
             Tus circuitos se guardan localmente en este dispositivo
           </p>
         </form>
+
+        <p className="text-[10px] text-muted-foreground/50 text-center mt-8">
+          Developed by Ing. Santiago Murillo
+        </p>
       </div>
     </div>
   )

@@ -1,26 +1,67 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    @media (prefers-color-scheme: light) {
-      .background { fill: black; }
-      .foreground { fill: white; }
-    }
-    @media (prefers-color-scheme: dark) {
-      .background { fill: white; }
-      .foreground { fill: black; }
-    }
-  </style>
-  <g clip-path="url(#clip0_7960_43945)">
-    <rect class="background" width="180" height="180" rx="37" />
-    <g style="transform: scale(95%); transform-origin: center">
-      <path class="foreground"
-        d="M101.141 53H136.632C151.023 53 162.689 64.6662 162.689 79.0573V112.904H148.112V79.0573C148.112 78.7105 148.098 78.3662 148.072 78.0251L112.581 112.898C112.701 112.902 112.821 112.904 112.941 112.904H148.112V126.672H112.941C98.5504 126.672 86.5638 114.891 86.5638 100.5V66.7434H101.141V100.5C101.141 101.15 101.191 101.792 101.289 102.422L137.56 66.7816C137.255 66.7563 136.945 66.7434 136.632 66.7434H101.141V53Z" />
-      <path class="foreground"
-        d="M65.2926 124.136L14 66.7372H34.6355L64.7495 100.436V66.7372H80.1365V118.47C80.1365 126.278 70.4953 129.958 65.2926 124.136Z" />
-    </g>
-  </g>
-  <defs>
-    <clipPath id="clip0_7960_43945">
-      <rect width="180" height="180" fill="white" />
-    </clipPath>
-  </defs>
+  <rect width="180" height="180" fill="#0a0a0a"/>
+
+  <!-- Outer hexagon (subtle glow border) -->
+  <polygon points="90,12 156,42 156,108 90,138 24,108 24,42"
+    fill="none" stroke="#4a8cc2" stroke-width="0.8" opacity="0.5"/>
+
+  <!-- Inner hexagon (main body) -->
+  <polygon points="90,18 150,46 150,104 90,132 30,104 30,46"
+    fill="#1a3a5c" stroke="#1e4d7a" stroke-width="2.5"/>
+
+  <!-- Inner fill gradient effect -->
+  <polygon points="90,22 146,48 146,102 90,128 34,102 34,48"
+    fill="#1e4a6e" opacity="0.6"/>
+
+  <!-- Horizontal trace line (subtle) -->
+  <line x1="34" y1="75" x2="146" y2="75" stroke="#4a8cc2" stroke-width="0.5" opacity="0.3" stroke-dasharray="2,4"/>
+
+  <!-- Corner dots on hexagon (purple) -->
+  <circle cx="52" cy="32" r="2.5" fill="#8b5cf6" opacity="0.7"/>
+  <circle cx="128" cy="32" r="2.5" fill="#8b5cf6" opacity="0.7"/>
+  <circle cx="52" cy="118" r="2.5" fill="#8b5cf6" opacity="0.7"/>
+  <circle cx="128" cy="118" r="2.5" fill="#8b5cf6" opacity="0.7"/>
+
+  <!-- Corner trace lines (purple) -->
+  <line x1="42" y1="26" x2="56" y2="36" stroke="#8b5cf6" stroke-width="0.8" opacity="0.5"/>
+  <line x1="138" y1="26" x2="124" y2="36" stroke="#8b5cf6" stroke-width="0.8" opacity="0.5"/>
+  <line x1="42" y1="124" x2="56" y2="114" stroke="#8b5cf6" stroke-width="0.8" opacity="0.5"/>
+  <line x1="138" y1="124" x2="124" y2="114" stroke="#8b5cf6" stroke-width="0.8" opacity="0.5"/>
+
+  <!-- AND/NAND Gate body -->
+  <path d="M 62 58 L 82 58 A 20 20 0 0 1 82 92 L 62 92 Z"
+    fill="#2a6090" stroke="#5ba3d9" stroke-width="1.8" opacity="0.9"/>
+
+  <!-- Gate label -->
+  <text x="74" y="80" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="700" fill="#a8d4f0" opacity="0.9">&amp;</text>
+
+  <!-- Negation bubble (NAND) -->
+  <circle cx="106" cy="75" r="5" fill="none" stroke="#4ade80" stroke-width="1.5"/>
+
+  <!-- Input wires (green) -->
+  <line x1="14" y1="66" x2="62" y2="66" stroke="#4ade80" stroke-width="1.8"/>
+  <line x1="14" y1="84" x2="62" y2="84" stroke="#4ade80" stroke-width="1.8"/>
+
+  <!-- Input pin dots -->
+  <circle cx="14" cy="66" r="4" fill="#4ade80"/>
+  <circle cx="14" cy="84" r="4" fill="#4ade80"/>
+
+  <!-- Gate input junction dots -->
+  <circle cx="62" cy="66" r="2.5" fill="#4ade80"/>
+  <circle cx="62" cy="84" r="2.5" fill="#4ade80"/>
+
+  <!-- Wire from gate to bubble -->
+  <line x1="102" y1="75" x2="101" y2="75" stroke="#4ade80" stroke-width="1.8"/>
+
+  <!-- Output wire (green) -->
+  <line x1="111" y1="75" x2="166" y2="75" stroke="#4ade80" stroke-width="1.8"/>
+
+  <!-- Output junction dot -->
+  <circle cx="112" cy="75" r="2.5" fill="#4ade80"/>
+
+  <!-- Output pin dot -->
+  <circle cx="166" cy="75" r="4" fill="#4ade80"/>
+
+  <!-- LOGIFLOW text -->
+  <text x="90" y="158" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#5ba3d9" opacity="0.85">LOGIFLOW</text>
 </svg>
