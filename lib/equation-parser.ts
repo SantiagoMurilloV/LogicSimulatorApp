@@ -30,9 +30,8 @@ function tokenize(input: string): Token[] {
     } else if (char === '!' || char === '~') {
       tokens.push({ type: 'NOT', value: "'" }); pos++
     } else if (/[A-Za-z]/.test(char)) {
-      // Collect full word first, then check for keywords
+      // Collect full word to check for keywords
       let word = ''
-      const wordStart = pos
       while (pos < str.length && /[A-Za-z0-9_]/.test(str[pos])) {
         word += str[pos]; pos++
       }
@@ -44,15 +43,15 @@ function tokenize(input: string): Token[] {
         tokens.push({ type: 'OR', value: '+' })
       } else if (upper === 'NOT') {
         tokens.push({ type: 'NOT', value: "'" })
-      } else if (upper === 'NAND' || upper === 'NOR' || upper === 'XOR') {
-        // Treat compound gate names as variables (they'll be handled at circuit level)
-        tokens.push({ type: 'VAR', value: upper })
       } else {
-        // Variable: single letter or multi-char
-        tokens.push({ type: 'VAR', value: upper })
+        // Each letter is a separate variable: "AB" becomes A, B (implicit AND)
+        for (const letter of upper) {
+          tokens.push({ type: 'VAR', value: letter })
+          // Check for postfix NOT after each letter — only applies to last
+        }
       }
 
-      // Check for postfix NOT: A'
+      // Check for postfix NOT: A' or AB' (applies to last variable)
       if (pos < str.length && str[pos] === "'") {
         tokens.push({ type: 'NOT', value: "'" }); pos++
       }
