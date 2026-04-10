@@ -31,7 +31,7 @@ export interface CircuitNode {
 }
 
 // AST node types for equation parsing
-export type ASTNodeType = 'AND' | 'OR' | 'NOT' | 'VAR'
+export type ASTNodeType = 'AND' | 'OR' | 'XOR' | 'NOT' | 'VAR'
 
 export interface ASTNode {
   type: ASTNodeType

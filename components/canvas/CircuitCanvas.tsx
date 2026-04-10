@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import {
   ReactFlow,
   Background,
@@ -22,6 +22,7 @@ import '@xyflow/react/dist/style.css'
 import { useCircuitStore } from '@/store/useCircuitStore'
 import GateNode from '@/components/gates/GateNode'
 import type { GateNodeData, GateType } from '@/lib/types'
+import { Trash2Icon } from 'lucide-react'
 
 const nodeTypes: NodeTypes = { gateNode: GateNode }
 
@@ -64,9 +65,37 @@ export default function CircuitCanvas() {
     [edges, setEdges, isSimulating]
   )
 
+  // Click on edge to show delete button
+  const [edgeMenu, setEdgeMenu] = useState<{ id: string; x: number; y: number } | null>(null)
+
+  const onEdgeClick = useCallback(
+    (event: React.MouseEvent, edge: Edge) => {
+      if (isSimulating) return
+      setEdgeMenu({ id: edge.id, x: event.clientX, y: event.clientY })
+    },
+    [isSimulating]
+  )
+
+  const deleteEdge = useCallback(() => {
+    if (!edgeMenu) return
+    setEdges(edges.filter((e) => e.id !== edgeMenu.id))
+    setEdgeMenu(null)
+  }, [edgeMenu, edges, setEdges])
+
+  const onPaneClick = useCallback(() => {
+    setEdgeMenu(null)
+  }, [])
+
   const onConnect = useCallback(
     (connection: Connection) => {
       if (isSimulating) return
+      // Prevent multiple connections to the same input handle
+      const alreadyConnected = edges.some(
+        (e) => e.target === connection.target && e.targetHandle === connection.targetHandle
+      )
+      if (alreadyConnected) return
+      // Prevent self-connections
+      if (connection.source === connection.target) return
       const newEdge: Edge = {
         id: `e-${connection.source}-${connection.target}-${connection.sourceHandle}-${connection.targetHandle}`,
         source: connection.source!,
@@ -104,6 +133,8 @@ export default function CircuitCanvas() {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onEdgeClick={onEdgeClick}
+        onPaneClick={onPaneClick}
         onConnect={onConnect}
         onDragOver={onDragOver}
         onDrop={onDrop}
@@ -138,6 +169,16 @@ export default function CircuitCanvas() {
           maskColor="rgba(0, 0, 0, 0.8)"
         />
       </ReactFlow>
+      {edgeMenu && (
+        <button
+          onClick={deleteEdge}
+          className="fixed z-50 w-5 h-5 flex items-center justify-center rounded-full bg-card border border-border text-muted-foreground hover:text-destructive hover:border-destructive/50 shadow-sm transition-colors"
+          style={{ left: edgeMenu.x - 10, top: edgeMenu.y - 10 }}
+          title="Eliminar conexión"
+        >
+          <Trash2Icon className="w-2.5 h-2.5" />
+        </button>
+      )}
     </div>
   )
 }

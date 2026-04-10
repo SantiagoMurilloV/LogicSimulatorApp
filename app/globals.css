@@ -136,6 +136,17 @@
 .react-flow__edge-path {
   stroke: var(--border);
   stroke-width: 2;
+  cursor: pointer;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: oklch(0.55 0.2 25);
+  stroke-width: 3;
+}
+
+/* Wider invisible hit area for easier clicking */
+.react-flow__edge-interaction {
+  stroke-width: 20 !important;
 }
 
 .react-flow__edge.animated .react-flow__edge-path {

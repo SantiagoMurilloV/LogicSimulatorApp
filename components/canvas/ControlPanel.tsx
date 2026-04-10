@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { useCircuitStore } from '@/store/useCircuitStore'
@@ -33,6 +33,20 @@ export default function ControlPanel() {
   const [ttVars, setTtVars] = useState(2)
   const [ttOutputs, setTtOutputs] = useState<boolean[]>([])
   const [ttInited, setTtInited] = useState(false)
+  const equationRef = useRef<HTMLTextAreaElement>(null)
+
+  const insertSymbol = (symbol: string) => {
+    const ta = equationRef.current
+    if (!ta) { setEquation(equation + symbol); return }
+    const start = ta.selectionStart
+    const end = ta.selectionEnd
+    const newEq = equation.slice(0, start) + symbol + equation.slice(end)
+    setEquation(newEq)
+    setTimeout(() => {
+      ta.focus()
+      ta.selectionStart = ta.selectionEnd = start + symbol.length
+    }, 0)
+  }
 
   const handleGenerate = () => generateFromEquation()
 
@@ -137,13 +151,33 @@ export default function ControlPanel() {
         <>
           <div className="flex flex-col gap-2">
             <Textarea
+              ref={equationRef}
               value={equation}
               onChange={(e) => setEquation(e.target.value)}
               placeholder="A · B + C'  ó  A AND B OR NOT C"
               className="font-mono text-sm min-h-[60px] resize-none bg-secondary border-border"
             />
+            <div className="flex flex-wrap gap-1">
+              {[
+                { label: '·', symbol: ' · ', title: 'AND' },
+                { label: '+', symbol: ' + ', title: 'OR' },
+                { label: "'", symbol: "'", title: 'NOT' },
+                { label: '⊕', symbol: ' ⊕ ', title: 'XOR' },
+                { label: '(', symbol: '(', title: 'Abrir paréntesis' },
+                { label: ')', symbol: ')', title: 'Cerrar paréntesis' },
+              ].map((s) => (
+                <button
+                  key={s.label}
+                  onClick={() => insertSymbol(s.symbol)}
+                  title={s.title}
+                  className="px-2.5 py-1 text-sm font-mono font-semibold rounded border border-border bg-secondary hover:bg-accent text-foreground transition-colors"
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
             <p className="text-[10px] text-muted-foreground">
-              NOT = <span className="font-mono">'</span> · AND = <span className="font-mono">·</span> o <span className="font-mono">*</span> · OR = <span className="font-mono">+</span>
+              NOT = <span className="font-mono">'</span> · AND = <span className="font-mono">·</span> o <span className="font-mono">*</span> · OR = <span className="font-mono">+</span> · XOR = <span className="font-mono">⊕</span>
             </p>
           </div>
 

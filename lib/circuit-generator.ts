@@ -127,82 +127,77 @@ export function extractEquationFromCircuit(
 
   const nodeMap = new Map(nodes.map((n) => [n.id, n]))
 
-  // Map INPUT labels to canonical letters
-  const inputNodes = nodes.filter((n) => n.data.gateType === 'INPUT')
-  const labelMap = new Map<string, string>()
-  // Sort inputs by position (top to bottom, left to right)
-  const sorted = [...inputNodes].sort((a, b) => a.position.y - b.position.y || a.position.x - b.position.x)
-  sorted.forEach((n, i) => {
-    labelMap.set(n.data.label, String.fromCharCode(65 + i))
-  })
-
   // Returns [equation, type] where type is the gate type of the root expression
-  function build(nodeId: string, visited: Set<string>): [string, string] {
-    if (visited.has(nodeId)) return ['?', '?']
-    visited.add(nodeId)
+  function build(nodeId: string, path: Set<string>): [string, string] {
+    // Only prevent cycles, not revisits (same input can feed multiple gates)
+    if (path.has(nodeId)) return ['?', '?']
+    path.add(nodeId)
 
     const node = nodeMap.get(nodeId)
-    if (!node) return ['?', '?']
+    if (!node) { path.delete(nodeId); return ['?', '?'] }
     const { gateType, label } = node.data
 
-    if (gateType === 'INPUT') return [labelMap.get(label) ?? label, 'VAR']
+    if (gateType === 'INPUT') { path.delete(nodeId); return [label, 'VAR'] }
 
     if (gateType === 'OUTPUT') {
       const ins = incoming.get(nodeId) ?? []
-      return ins.length > 0 ? build(ins[0].sourceId, new Set(visited)) : ['?', '?']
+      const result = ins.length > 0 ? build(ins[0].sourceId, path) : ['?', '?'] as [string, string]
+      path.delete(nodeId)
+      return result
     }
 
     const ins = (incoming.get(nodeId) ?? []).sort((a, b) => a.handleIndex - b.handleIndex)
 
     if (gateType === 'NOT') {
-      if (ins.length === 0) return ["?'", 'NOT']
-      const [operand, opType] = build(ins[0].sourceId, new Set(visited))
+      if (ins.length === 0) { path.delete(nodeId); return ["?'", 'NOT'] }
+      const [operand, opType] = build(ins[0].sourceId, path)
+      path.delete(nodeId)
       if (opType === 'VAR') return [`${operand}'`, 'NOT']
       return [`(${operand})'`, 'NOT']
     }
 
     if (gateType === 'NAND') {
-      if (ins.length < 2) return ['?', 'NAND']
-      const [l] = build(ins[0].sourceId, new Set(visited))
-      const [r] = build(ins[1].sourceId, new Set(visited))
+      if (ins.length < 2) { path.delete(nodeId); return ['?', 'NAND'] }
+      const [l] = build(ins[0].sourceId, path)
+      const [r] = build(ins[1].sourceId, path)
+      path.delete(nodeId)
       return [`(${l} · ${r})'`, 'NOT']
     }
 
     if (gateType === 'NOR') {
-      if (ins.length < 2) return ['?', 'NOR']
-      const [l] = build(ins[0].sourceId, new Set(visited))
-      const [r] = build(ins[1].sourceId, new Set(visited))
+      if (ins.length < 2) { path.delete(nodeId); return ['?', 'NOR'] }
+      const [l] = build(ins[0].sourceId, path)
+      const [r] = build(ins[1].sourceId, path)
+      path.delete(nodeId)
       return [`(${l} + ${r})'`, 'NOT']
     }
 
     if (gateType === 'XOR') {
-      if (ins.length < 2) return ['?', 'XOR']
-      const [l] = build(ins[0].sourceId, new Set(visited))
-      const [r] = build(ins[1].sourceId, new Set(visited))
+      if (ins.length < 2) { path.delete(nodeId); return ['?', 'XOR'] }
+      const [l] = build(ins[0].sourceId, path)
+      const [r] = build(ins[1].sourceId, path)
+      path.delete(nodeId)
       return [`${l} ⊕ ${r}`, 'XOR']
     }
 
-    if (ins.length < 2) return ['?', gateType]
-    const [l, lType] = build(ins[0].sourceId, new Set(visited))
-    const [r, rType] = build(ins[1].sourceId, new Set(visited))
+    if (ins.length < 2) { path.delete(nodeId); return ['?', gateType] }
+    const [l, lType] = build(ins[0].sourceId, path)
+    const [r, rType] = build(ins[1].sourceId, path)
+    path.delete(nodeId)
 
     if (gateType === 'AND') {
-      // Wrap OR children in parens (lower precedence inside higher)
-      const ls = lType === 'OR' ? `(${l})` : l
-      const rs = rType === 'OR' ? `(${r})` : r
+      const ls = lType === 'OR' || lType === 'XOR' ? `(${l})` : l
+      const rs = rType === 'OR' || rType === 'XOR' ? `(${r})` : r
       return [`${ls} · ${rs}`, 'AND']
     }
 
     if (gateType === 'OR') {
-      // Wrap AND (product) children in parens for clarity in SOP form
-      const ls = lType === 'AND' ? `(${l})` : l
-      const rs = rType === 'AND' ? `(${r})` : r
-      return [`${ls} + ${rs}`, 'OR']
+      return [`${l} + ${r}`, 'OR']
     }
 
     return ['?', '?']
   }
 
-  const [equation] = build(outputNodes[0].id, new Set())
+  const [equation] = build(outputNodes[0].id, new Set<string>())
   return { equation, error: null }
 }

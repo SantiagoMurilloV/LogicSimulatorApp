@@ -1,6 +1,6 @@
 import type { ASTNode, CircuitError } from './types'
 
-type TokenType = 'VAR' | 'AND' | 'OR' | 'NOT' | 'LPAREN' | 'RPAREN' | 'EOF'
+type TokenType = 'VAR' | 'AND' | 'OR' | 'XOR' | 'NOT' | 'LPAREN' | 'RPAREN' | 'EOF'
 
 interface Token {
   type: TokenType
@@ -27,6 +27,8 @@ function tokenize(input: string): Token[] {
       tokens.push({ type: 'AND', value: '·' }); pos++
     } else if (char === '+' || char === '|') {
       tokens.push({ type: 'OR', value: '+' }); pos++
+    } else if (char === '⊕') {
+      tokens.push({ type: 'XOR', value: '⊕' }); pos++
     } else if (char === '!' || char === '~') {
       tokens.push({ type: 'NOT', value: "'" }); pos++
     } else if (/[A-Za-z]/.test(char)) {
@@ -43,6 +45,8 @@ function tokenize(input: string): Token[] {
         tokens.push({ type: 'OR', value: '+' })
       } else if (upper === 'NOT') {
         tokens.push({ type: 'NOT', value: "'" })
+      } else if (upper === 'XOR') {
+        tokens.push({ type: 'XOR', value: '⊕' })
       } else {
         // Each letter is a separate variable: "AB" becomes A, B (implicit AND)
         for (const letter of upper) {
@@ -138,9 +142,10 @@ class Parser {
 
   private orExpr(): ASTNode {
     let left = this.andExpr()
-    while (this.current().type === 'OR') {
-      this.advance()
-      left = { type: 'OR', left, right: this.andExpr() }
+    while (this.current().type === 'OR' || this.current().type === 'XOR') {
+      const op = this.advance()
+      const right = this.andExpr()
+      left = { type: op.type === 'XOR' ? 'XOR' : 'OR', left, right }
     }
     return left
   }
@@ -210,6 +215,7 @@ export function evaluateAST(ast: ASTNode, values: Record<string, boolean>): bool
     case 'VAR': return values[ast.value!] ?? false
     case 'AND': return evaluateAST(ast.left!, values) && evaluateAST(ast.right!, values)
     case 'OR': return evaluateAST(ast.left!, values) || evaluateAST(ast.right!, values)
+    case 'XOR': return evaluateAST(ast.left!, values) !== evaluateAST(ast.right!, values)
     case 'NOT': return !evaluateAST(ast.operand!, values)
     default: return false
   }
@@ -238,6 +244,13 @@ export function astToEquation(ast: ASTNode): string {
       const ls = ast.left!.type === 'AND' ? `(${l})` : l
       const rs = ast.right!.type === 'AND' ? `(${r})` : r
       return `${ls} + ${rs}`
+    }
+    case 'XOR': {
+      const l = astToEquation(ast.left!)
+      const r = astToEquation(ast.right!)
+      const ls = ast.left!.type === 'AND' || ast.left!.type === 'OR' ? `(${l})` : l
+      const rs = ast.right!.type === 'AND' || ast.right!.type === 'OR' ? `(${r})` : r
+      return `${ls} ⊕ ${rs}`
     }
     default: return ''
   }

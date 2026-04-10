@@ -88,7 +88,15 @@ export const useCircuitStore = create<CircuitStore>((set, get) => ({
     const id = `node-${++nodeIdCounter}`
     let label: string
     if (type === 'INPUT') {
-      label = String.fromCharCode(65 + inputLetterCounter++)
+      // Find next available letter based on existing inputs
+      const existingLabels = new Set(
+        get().nodes.filter((n) => n.data.gateType === 'INPUT').map((n) => n.data.label)
+      )
+      let letterIdx = 0
+      while (existingLabels.has(String.fromCharCode(65 + letterIdx))) {
+        letterIdx++
+      }
+      label = String.fromCharCode(65 + letterIdx)
     } else if (type === 'OUTPUT') {
       label = 'Y'
     } else {
